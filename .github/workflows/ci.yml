@@ -1,0 +1,24 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install forc
+        run: chmod +x install-forc.sh && ./install-forc.sh
+      
+      - name: Run fuel-core
+        run: make services-run
+      
+      - name: Build & deploy the contract
+        run: make deploy-contract
+
+      - name: Run tests
+        run: make test
+
+      - name: Cleanup
+        run: make services-clean
